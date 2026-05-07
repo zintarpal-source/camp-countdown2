@@ -58,6 +58,7 @@ const teams = [
 ];
 
 const MAP_URL = "https://maps.app.goo.gl/vqt3KxdhN1oSf4GR6";
+const WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast?latitude=48.949946&longitude=23.480489&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=3";
 
 export default function CampZelemiankaSite() {
   const [screen, setScreen] = useState({ page: "home" });
@@ -151,26 +152,32 @@ function HomePage({ onOpenSession }) {
             </p>
           </motion.div>
 
-          <motion.a
-            href={MAP_URL}
-            target="_blank"
-            rel="noreferrer"
+          <motion.aside
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="hidden rounded-[2rem] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-xl transition hover:bg-white/15 lg:block"
-            title="Відкрити на карті"
+            className="hidden space-y-4 lg:block"
           >
-            <div className="flex items-center gap-4">
-              <div className="grid h-14 w-14 place-items-center rounded-2xl border border-teal-200/25 bg-teal-300/10 text-teal-100">
-                <Navigation className="h-7 w-7" />
+            <a
+              href={MAP_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="block rounded-[2rem] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-xl transition hover:bg-white/15"
+              title="Відкрити на карті"
+            >
+              <div className="flex items-center gap-4">
+                <div className="grid h-14 w-14 place-items-center rounded-2xl border border-teal-200/25 bg-teal-300/10 text-teal-100">
+                  <Navigation className="h-7 w-7" />
+                </div>
+                <div>
+                  <div className="text-lg font-black">с. Гребенів</div>
+                  <div className="mt-1 text-sm text-slate-300">Відкрити карту</div>
+                </div>
               </div>
-              <div>
-                <div className="text-lg font-black">с. Гребенів</div>
-                <div className="mt-1 text-sm text-slate-300">Відкрити карту</div>
-              </div>
-            </div>
-          </motion.a>
+            </a>
+
+            <WeatherWidget />
+          </motion.aside>
         </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
@@ -309,6 +316,142 @@ function TeamCard({ team, index }) {
       <div className="mt-5 text-2xl font-black text-white">{team.name}</div>
     </motion.article>
   );
+}
+
+
+function WeatherWidget() {
+  const { weather, loading, error } = useWeather();
+
+  if (loading) {
+    return (
+      <div className="rounded-[2rem] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-xl">
+        <div className="text-sm font-black uppercase tracking-[0.2em] text-teal-100/70">Погода</div>
+        <div className="mt-3 text-lg font-bold text-white">Завантажуємо погоду...</div>
+      </div>
+    );
+  }
+
+  if (error || !weather) {
+    return (
+      <a
+        href="https://www.google.com/search?q=погода+Гребенів"
+        target="_blank"
+        rel="noreferrer"
+        className="block rounded-[2rem] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-xl transition hover:bg-white/15"
+      >
+        <div className="text-sm font-black uppercase tracking-[0.2em] text-teal-100/70">Погода</div>
+        <div className="mt-3 text-lg font-bold text-white">Погода в Гребенові</div>
+        <div className="mt-1 text-sm text-slate-300">Відкрити прогноз</div>
+      </a>
+    );
+  }
+
+  return (
+    <div className="rounded-[2rem] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-xl">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="text-sm font-black uppercase tracking-[0.2em] text-teal-100/70">Погода зараз</div>
+          <div className="mt-2 text-lg font-black text-white">с. Гребенів</div>
+        </div>
+        <div className="text-4xl">{weather.icon}</div>
+      </div>
+
+      <div className="mt-4 flex items-end gap-3">
+        <div className="text-5xl font-black leading-none text-teal-200">{weather.temp}°</div>
+        <div className="pb-1 text-sm text-slate-300">відчувається як {weather.feelsLike}°</div>
+      </div>
+
+      <div className="mt-3 text-base font-bold text-white/90">{weather.description}</div>
+
+      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+        <div className="rounded-2xl bg-black/20 p-3">
+          <div className="text-slate-400">Вітер</div>
+          <div className="mt-1 font-black text-white">{weather.wind} км/год</div>
+        </div>
+        <div className="rounded-2xl bg-black/20 p-3">
+          <div className="text-slate-400">Опади</div>
+          <div className="mt-1 font-black text-white">{weather.precipitation} мм</div>
+        </div>
+      </div>
+
+      <div className="mt-3 text-xs text-slate-400">Оновлюється автоматично кожні 30 хв</div>
+    </div>
+  );
+}
+
+function useWeather() {
+  const [state, setState] = useState({ weather: null, loading: true, error: null });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadWeather() {
+      try {
+        const response = await fetch(WEATHER_API_URL);
+        if (!response.ok) {
+          throw new Error("Не вдалося отримати погоду");
+        }
+
+        const data = await response.json();
+        const current = data.current;
+
+        const weather = {
+          temp: Math.round(current.temperature_2m),
+          feelsLike: Math.round(current.apparent_temperature),
+          wind: Math.round(current.wind_speed_10m),
+          precipitation: Number(current.precipitation || 0).toFixed(1),
+          ...describeWeather(current.weather_code),
+        };
+
+        if (!cancelled) {
+          setState({ weather, loading: false, error: null });
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setState({ weather: null, loading: false, error });
+        }
+      }
+    }
+
+    loadWeather();
+    const interval = window.setInterval(loadWeather, 30 * 60 * 1000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, []);
+
+  return state;
+}
+
+function describeWeather(code) {
+  const table = {
+    0: ["☀️", "Ясно"],
+    1: ["🌤️", "Переважно ясно"],
+    2: ["⛅", "Мінлива хмарність"],
+    3: ["☁️", "Хмарно"],
+    45: ["🌫️", "Туман"],
+    48: ["🌫️", "Паморозь / туман"],
+    51: ["🌦️", "Легка мряка"],
+    53: ["🌦️", "Мряка"],
+    55: ["🌧️", "Сильна мряка"],
+    61: ["🌧️", "Невеликий дощ"],
+    63: ["🌧️", "Дощ"],
+    65: ["🌧️", "Сильний дощ"],
+    71: ["🌨️", "Невеликий сніг"],
+    73: ["🌨️", "Сніг"],
+    75: ["❄️", "Сильний сніг"],
+    80: ["🌦️", "Короткий дощ"],
+    81: ["🌧️", "Зливи"],
+    82: ["⛈️", "Сильні зливи"],
+    95: ["⛈️", "Гроза"],
+    96: ["⛈️", "Гроза з градом"],
+    99: ["⛈️", "Сильна гроза з градом"],
+  };
+
+  const [icon, description] = table[code] || ["🌡️", "Поточна погода"];
+  return { icon, description };
 }
 
 
