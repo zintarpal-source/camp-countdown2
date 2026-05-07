@@ -57,6 +57,8 @@ const teams = [
   { name: "Червоний лебідь", image: "/team-logos/red-swan.png" },
 ];
 
+const MAP_URL = "https://camp-countdown2.vercel.app/";
+
 export default function CampZelemiankaSite() {
   const [screen, setScreen] = useState({ page: "home" });
   const activeSession =
@@ -112,10 +114,16 @@ function Header({ onBack, compact = false }) {
           На головну
         </button>
       ) : (
-        <div className="hidden items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-bold text-slate-100 shadow-2xl backdrop-blur-xl md:inline-flex">
+        <a
+          href={MAP_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="hidden items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-bold text-slate-100 shadow-2xl backdrop-blur-xl transition hover:bg-white/15 md:inline-flex"
+          title="Відкрити на карті"
+        >
           <MapPin className="h-5 w-5 text-teal-200" />
           с. Гребенів
-        </div>
+        </a>
       )}
     </header>
   );
@@ -143,11 +151,15 @@ function HomePage({ onOpenSession }) {
             </p>
           </motion.div>
 
-          <motion.aside
+          <motion.a
+            href={MAP_URL}
+            target="_blank"
+            rel="noreferrer"
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="hidden rounded-[2rem] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-xl lg:block"
+            className="hidden rounded-[2rem] border border-white/12 bg-white/10 p-5 shadow-2xl backdrop-blur-xl transition hover:bg-white/15 lg:block"
+            title="Відкрити на карті"
           >
             <div className="flex items-center gap-4">
               <div className="grid h-14 w-14 place-items-center rounded-2xl border border-teal-200/25 bg-teal-300/10 text-teal-100">
@@ -155,10 +167,10 @@ function HomePage({ onOpenSession }) {
               </div>
               <div>
                 <div className="text-lg font-black">с. Гребенів</div>
-                <div className="mt-1 text-sm text-slate-300">Карпатський табір</div>
+                <div className="mt-1 text-sm text-slate-300">Відкрити карту</div>
               </div>
             </div>
-          </motion.aside>
+          </motion.a>
         </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
