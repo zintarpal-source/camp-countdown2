@@ -72,7 +72,12 @@ export default function CampZelemiankaSite() {
     <main className="relative min-h-screen overflow-x-hidden bg-slate-950 text-white selection:bg-teal-300 selection:text-slate-950">
       <Atmosphere />
       {screen.page === "home" ? (
-        <HomePage onOpenSession={(id) => setScreen({ page: "session", id })} />
+        <HomePage
+          onOpenSession={(id) => setScreen({ page: "session", id })}
+          onOpenLegend={() => setScreen({ page: "legend" })}
+        />
+      ) : screen.page === "legend" ? (
+        <LegendPage onBack={() => setScreen({ page: "home" })} />
       ) : screen.page === "packingList" ? (
         <PackingListPage onBack={() => setScreen({ page: "session", id: screen.fromSession || 1 })} />
       ) : (
@@ -162,7 +167,7 @@ function TeamMiniLogos() {
   );
 }
 
-function HomePage({ onOpenSession }) {
+function HomePage({ onOpenSession, onOpenLegend }) {
   return (
     <div className="relative z-10 min-h-screen">
       <Header />
@@ -182,6 +187,17 @@ function HomePage({ onOpenSession }) {
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200/85 md:text-xl">
               Табір Зелем’янка — місце, де народжуються спогади, знаходяться друзі та відкривається справжній ти.
             </p>
+
+            <div className="mt-7 flex flex-wrap gap-3">
+              <button
+                onClick={onOpenLegend}
+                className="inline-flex items-center gap-3 rounded-full border border-teal-200/25 bg-teal-300/15 px-6 py-3 text-base font-black text-teal-100 shadow-2xl backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-teal-300/22"
+              >
+                <Sparkles className="h-5 w-5" />
+                Легенда табору
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </div>
           </motion.div>
 
           <motion.aside
@@ -256,6 +272,115 @@ function SessionCard({ session, index, onClick }) {
     </motion.button>
   );
 }
+
+function LegendPage({ onBack }) {
+  const legendSteps = [
+    {
+      title: "Зелем’янка кличе",
+      text: "Кажуть, що між карпатськими схилами є місце, де літо звучить гучніше, зорі світять ближче, а кожна дитина може знайти свою силу.",
+    },
+    {
+      title: "П’ять знаків",
+      text: "У таборі живуть п’ять знаків-команд: ведмідь, лис, крук, кріт і лебідь. Кожен знак має свій характер, свою барву і своє випробування.",
+    },
+    {
+      title: "Три заїзди — три пригоди",
+      text: "Кожен заїзд відкриває нову частину легенди. Учасники збирають спогади, проходять завдання, знаходять друзів і стають частиною історії табору.",
+    },
+  ];
+
+  return (
+    <div className="relative z-10 min-h-screen">
+      <Header onBack={onBack} compact />
+
+      <section className="mx-auto max-w-7xl px-5 pb-24 pt-6 md:px-8 lg:px-10">
+        <motion.div
+          initial={{ opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.68 }}
+          className="mx-auto max-w-4xl text-center"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/20 bg-teal-300/10 px-4 py-2 text-sm font-black text-teal-100 backdrop-blur-xl">
+            <Sparkles className="h-4 w-4" />
+            Історія, з якої починається пригода
+          </div>
+
+          <h1 className="mt-6 text-5xl font-black leading-[0.95] tracking-[-0.06em] md:text-7xl lg:text-8xl">
+            Легенда табору
+          </h1>
+
+          <p className="mx-auto mt-6 max-w-3xl text-xl leading-9 text-slate-200/85">
+            Це сторінка, яку ми ще наповнимо вашою справжньою легендою.
+            Поки тут перша заготовка в атмосфері Зелем’янки.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.68, delay: 0.1 }}
+          className="mt-12 overflow-hidden rounded-[2.5rem] border border-white/15 bg-white/10 shadow-[0_30px_100px_rgba(0,0,0,.36)] backdrop-blur-2xl"
+        >
+          <div className="relative p-7 md:p-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(45,212,191,.18),transparent_35%),radial-gradient(circle_at_80%_30%,rgba(125,211,252,.12),transparent_32%)]" />
+
+            <div className="relative grid gap-7 lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="rounded-[2rem] border border-teal-200/15 bg-black/20 p-6">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="grid h-12 w-12 place-items-center rounded-2xl border border-teal-200/25 bg-teal-300/10 text-teal-100">
+                    <Mountain className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-black uppercase tracking-[0.2em] text-teal-100/70">Місце легенди</div>
+                    <div className="text-xl font-black text-white">с. Гребенів</div>
+                  </div>
+                </div>
+
+                <p className="text-lg leading-8 text-slate-200/85">
+                  Тут, де ранковий туман торкається смерек, а стежки ведуть до нових відкриттів,
+                  починається історія табору Зелем’янка.
+                </p>
+
+                <div className="mt-7 grid grid-cols-5 gap-2">
+                  {teams.map((team) => (
+                    <img
+                      key={team.name}
+                      src={team.image}
+                      alt={team.name}
+                      title={team.name}
+                      className="h-12 w-12 rounded-full object-cover ring-1 ring-white/25"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-4">
+                {legendSteps.map((step, index) => (
+                  <div key={step.title} className="rounded-[2rem] border border-white/12 bg-white/8 p-5 backdrop-blur-xl">
+                    <div className="mb-3 flex items-center gap-3">
+                      <div className="grid h-10 w-10 place-items-center rounded-full border border-teal-200/25 bg-teal-300/10 text-sm font-black text-teal-100">
+                        {index + 1}
+                      </div>
+                      <h2 className="text-2xl font-black text-white">{step.title}</h2>
+                    </div>
+                    <p className="text-base leading-7 text-slate-300">{step.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-10 rounded-[2rem] border border-white/12 bg-white/8 p-6 text-center shadow-2xl backdrop-blur-xl">
+          <p className="text-lg italic leading-8 text-teal-100">
+            “Коли команда знаходить свій знак — пригода стає справжньою.”
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 
 function SessionPage({ session, onBack, onOpenPackingList }) {
   const targetDate = useMemo(() => new Date(session.start), [session.start]);
