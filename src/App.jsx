@@ -57,7 +57,7 @@ const teams = [
   { name: "Червоний лебідь", image: "/team-logos/red-swan.png" },
 ];
 
-const MAP_URL = "https://camp-countdown2.vercel.app/";
+const MAP_URL = "https://maps.app.goo.gl/vqt3KxdhN1oSf4GR6";
 
 export default function CampZelemiankaSite() {
   const [screen, setScreen] = useState({ page: "home" });
