@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #06111f;
+}
+
+button {
+  font: inherit;
+}
+
+.blue-aura {
+  --team-main: rgba(37, 99, 235, 0.96);
+  filter: drop-shadow(0 0 38px rgba(59, 130, 246, 0.48));
+}
+
+.green-aura {
+  --team-main: rgba(22, 163, 74, 0.96);
+  filter: drop-shadow(0 0 38px rgba(34, 197, 94, 0.48));
+}
+
+.orange-aura {
+  --team-main: rgba(234, 88, 12, 0.96);
+  filter: drop-shadow(0 0 38px rgba(249, 115, 22, 0.5));
+}
+
+.yellow-aura {
+  --team-main: rgba(202, 138, 4, 0.96);
+  filter: drop-shadow(0 0 38px rgba(234, 179, 8, 0.5));
+}
+
+.red-aura {
+  --team-main: rgba(220, 38, 38, 0.96);
+  filter: drop-shadow(0 0 38px rgba(239, 68, 68, 0.5));
+}
+
+.blue-gem { background: linear-gradient(135deg, #1d4ed8, #93c5fd); }
+.green-gem { background: linear-gradient(135deg, #15803d, #86efac); }
+.orange-gem { background: linear-gradient(135deg, #c2410c, #fdba74); }
+.yellow-gem { background: linear-gradient(135deg, #ca8a04, #fde68a); }
+.red-gem { background: linear-gradient(135deg, #b91c1c, #fca5a5); }
