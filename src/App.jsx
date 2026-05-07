@@ -95,21 +95,25 @@ function Atmosphere() {
 
 function Header({ onBack, compact = false }) {
   return (
-    <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-6 md:px-8 lg:px-10">
-      <button onClick={onBack} className="group flex items-center gap-4 text-left">
-        <div className="relative grid h-14 w-14 place-items-center rounded-2xl border border-teal-200/25 bg-teal-300/10 shadow-[0_0_35px_rgba(45,212,191,.16)] backdrop-blur-xl transition group-hover:bg-teal-300/15">
-          <CampLogo />
-        </div>
-        <div>
-          <div className="text-2xl font-black tracking-[-0.035em] md:text-3xl">Табір Зелем’янка</div>
-          <div className="mt-1 text-xs font-bold uppercase tracking-[0.28em] text-teal-100/65">с. Гребенів</div>
-        </div>
-      </button>
+    <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-5 py-6 md:px-8 lg:px-10">
+      <div className="flex min-w-0 items-center gap-4">
+        <button onClick={onBack} className="group flex min-w-0 items-center gap-4 text-left">
+          <div className="relative grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-teal-200/25 bg-teal-300/10 shadow-[0_0_35px_rgba(45,212,191,.16)] backdrop-blur-xl transition group-hover:bg-teal-300/15">
+            <CampLogo />
+          </div>
+          <div className="min-w-0">
+            <div className="text-2xl font-black tracking-[-0.035em] md:text-3xl">Табір Зелем’янка</div>
+            <div className="mt-1 text-xs font-bold uppercase tracking-[0.28em] text-teal-100/65">с. Гребенів</div>
+          </div>
+        </button>
+
+        <TeamMiniLogos />
+      </div>
 
       {compact ? (
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-black text-white shadow-2xl backdrop-blur-xl transition hover:bg-white/15"
+          className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-black text-white shadow-2xl backdrop-blur-xl transition hover:bg-white/15"
         >
           <ArrowLeft className="h-4 w-4" />
           На головну
@@ -119,7 +123,7 @@ function Header({ onBack, compact = false }) {
           href={MAP_URL}
           target="_blank"
           rel="noreferrer"
-          className="hidden items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-bold text-slate-100 shadow-2xl backdrop-blur-xl transition hover:bg-white/15 md:inline-flex"
+          className="hidden shrink-0 items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-bold text-slate-100 shadow-2xl backdrop-blur-xl transition hover:bg-white/15 md:inline-flex"
           title="Відкрити на карті"
         >
           <MapPin className="h-5 w-5 text-teal-200" />
@@ -127,6 +131,27 @@ function Header({ onBack, compact = false }) {
         </a>
       )}
     </header>
+  );
+}
+
+function TeamMiniLogos() {
+  return (
+    <div className="hidden items-center gap-1.5 rounded-full border border-white/12 bg-white/10 px-2.5 py-2 shadow-2xl backdrop-blur-xl sm:flex">
+      {teams.map((team) => (
+        <div
+          key={team.name}
+          className="group relative"
+          title={team.name}
+        >
+          <img
+            src={team.image}
+            alt={team.name}
+            className="h-8 w-8 rounded-full object-cover ring-1 ring-white/25 transition group-hover:scale-110 group-hover:ring-teal-200/70 md:h-9 md:w-9"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
   );
 }
 
