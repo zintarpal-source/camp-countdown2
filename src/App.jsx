@@ -50,11 +50,11 @@ const sessions = [
 ];
 
 const teams = [
-  { name: "Синій ведмідь", emoji: "🐻", colorClass: "team-blue" },
-  { name: "Зелений лис", emoji: "🦊", colorClass: "team-green" },
-  { name: "Помаранчевий крук", emoji: "🐦", colorClass: "team-orange" },
-  { name: "Жовтий кріт", emoji: "🦡", colorClass: "team-yellow" },
-  { name: "Червоний лебідь", emoji: "🦢", colorClass: "team-red" },
+  { name: "Синій ведмідь", image: "/team-logos/blue-bear.png" },
+  { name: "Зелений лис", image: "/team-logos/green-fox.png" },
+  { name: "Помаранчевий крук", image: "/team-logos/orange-raven.png" },
+  { name: "Жовтий кріт", image: "/team-logos/yellow-mole.png" },
+  { name: "Червоний лебідь", image: "/team-logos/red-swan.png" },
 ];
 
 export default function CampZelemiankaSite() {
@@ -288,21 +288,17 @@ function TeamCard({ team, index }) {
       transition={{ duration: 0.6, delay: index * 0.08 }}
       className="rounded-[2.1rem] border border-white/15 bg-white/10 p-6 text-center shadow-[0_25px_80px_rgba(0,0,0,.28)] backdrop-blur-xl"
     >
-      <SimpleTeamBadge team={team} />
+      <img
+        src={team.image}
+        alt={team.name}
+        className="mx-auto h-56 w-56 rounded-full object-contain drop-shadow-[0_0_34px_rgba(45,212,191,.25)]"
+        loading="lazy"
+      />
       <div className="mt-5 text-2xl font-black text-white">{team.name}</div>
     </motion.article>
   );
 }
 
-function SimpleTeamBadge({ team }) {
-  return (
-    <div className={`simple-badge ${team.colorClass}`}>
-      <div className="simple-badge-inner">
-        <div className="simple-badge-emoji">{team.emoji}</div>
-      </div>
-    </div>
-  );
-}
 
 function CardLandscape({ scene }) {
   const overlay =
