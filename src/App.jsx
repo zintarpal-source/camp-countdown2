@@ -58,6 +58,7 @@ const teams = [
 ];
 
 const MAP_URL = "https://maps.app.goo.gl/vqt3KxdhN1oSf4GR6";
+const PACKING_LIST_IMAGE = "/checklist/packing-list.png";
 const WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast?latitude=48.949946&longitude=23.480489&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=3";
 
 export default function CampZelemiankaSite() {
@@ -72,8 +73,14 @@ export default function CampZelemiankaSite() {
       <Atmosphere />
       {screen.page === "home" ? (
         <HomePage onOpenSession={(id) => setScreen({ page: "session", id })} />
+      ) : screen.page === "packingList" ? (
+        <PackingListPage onBack={() => setScreen({ page: "session", id: screen.fromSession || 1 })} />
       ) : (
-        <SessionPage session={activeSession} onBack={() => setScreen({ page: "home" })} />
+        <SessionPage
+          session={activeSession}
+          onBack={() => setScreen({ page: "home" })}
+          onOpenPackingList={() => setScreen({ page: "packingList", fromSession: activeSession.id })}
+        />
       )}
     </main>
   );
@@ -250,7 +257,7 @@ function SessionCard({ session, index, onClick }) {
   );
 }
 
-function SessionPage({ session, onBack }) {
+function SessionPage({ session, onBack, onOpenPackingList }) {
   const targetDate = useMemo(() => new Date(session.start), [session.start]);
   const countdown = useCountdown(targetDate);
 
@@ -279,7 +286,18 @@ function SessionPage({ session, onBack }) {
           <Counter icon={<Timer />} value={countdown.seconds} label="секунд" last />
         </motion.div>
 
-        <div className="mt-7 flex justify-center text-teal-200">
+        <div className="mt-7 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <button
+            onClick={onOpenPackingList}
+            className="inline-flex items-center gap-3 rounded-full border border-teal-200/25 bg-teal-300/15 px-6 py-3 text-base font-black text-teal-100 shadow-2xl backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-teal-300/22"
+          >
+            <CalendarDays className="h-5 w-5" />
+            Список необхідних речей
+            <ArrowRight className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="mt-4 flex justify-center text-teal-200">
           <ChevronDown className="h-9 w-9 animate-bounce" />
         </div>
       </section>
@@ -308,6 +326,65 @@ function SessionPage({ session, onBack }) {
     </div>
   );
 }
+
+function PackingListPage({ onBack }) {
+  return (
+    <div className="relative z-10 min-h-screen">
+      <Header onBack={onBack} compact />
+
+      <section className="mx-auto max-w-5xl px-5 pb-20 pt-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.68 }}
+          className="mb-8 text-center"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/20 bg-teal-300/10 px-4 py-2 text-sm font-black text-teal-100 backdrop-blur-xl">
+            <Sparkles className="h-4 w-4" />
+            Пам’ятка для батьків
+          </div>
+          <h1 className="mt-5 text-4xl font-black tracking-[-0.05em] md:text-6xl">
+            Список необхідних речей
+          </h1>
+          <p className="mt-3 text-lg text-slate-300">Що взяти з собою в табір</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.68, delay: 0.08 }}
+          className="rounded-[2rem] border border-white/15 bg-white/10 p-3 shadow-[0_30px_100px_rgba(0,0,0,.36)] backdrop-blur-xl md:p-4"
+        >
+          <img
+            src={PACKING_LIST_IMAGE}
+            alt="Список необхідних речей: що взяти з собою в табір"
+            className="w-full rounded-[1.4rem] object-contain"
+          />
+        </motion.div>
+
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <a
+            href={PACKING_LIST_IMAGE}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-3 text-sm font-black text-white shadow-2xl backdrop-blur-xl transition hover:bg-white/15"
+          >
+            Відкрити зображення
+          </a>
+
+          <a
+            href={PACKING_LIST_IMAGE}
+            download="spysok-neobhidnyh-rechei.png"
+            className="inline-flex items-center gap-2 rounded-full border border-teal-200/25 bg-teal-300/15 px-5 py-3 text-sm font-black text-teal-100 shadow-2xl backdrop-blur-xl transition hover:bg-teal-300/22"
+          >
+            Завантажити список
+          </a>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 
 function Counter({ icon, value, label, last = false }) {
   return (
