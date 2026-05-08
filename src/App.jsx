@@ -273,109 +273,347 @@ function SessionCard({ session, index, onClick }) {
   );
 }
 
+
 function LegendPage({ onBack }) {
-  const legendSteps = [
+  const heroes = [
     {
-      title: "Зелем’янка кличе",
-      text: "Кажуть, що між карпатськими схилами є місце, де літо звучить гучніше, зорі світять ближче, а кожна дитина може знайти свою силу.",
+      name: "Зелений Лис",
+      image: "/team-logos/green-fox.png",
+      accent: "from-emerald-400/25 to-lime-300/10",
+      ring: "ring-emerald-300/40",
+      icon: "🌿",
+      text: "Зелений Лис був найхитрішим і найспритнішим серед усіх. Його хутро мало колір молодого моху після дощу, а очі світилися, мов смарагди. Він знав усі таємні стежки гір і міг почути, як росте трава.",
     },
     {
-      title: "П’ять знаків",
-      text: "У таборі живуть п’ять знаків-команд: ведмідь, лис, крук, кріт і лебідь. Кожен знак має свій характер, свою барву і своє випробування.",
+      name: "Синій Ведмідь",
+      image: "/team-logos/blue-bear.png",
+      accent: "from-sky-400/25 to-blue-300/10",
+      ring: "ring-sky-300/40",
+      icon: "💧",
+      text: "Синій Ведмідь був великим і добрим. Його шерсть нагадувала вечірнє небо перед грозою. Він умів розмовляти з ріками та ніколи не забував стародавніх пісень гір.",
     },
     {
-      title: "Три заїзди — три пригоди",
-      text: "Кожен заїзд відкриває нову частину легенди. Учасники збирають спогади, проходять завдання, знаходять друзів і стають частиною історії табору.",
+      name: "Жовтий Кріт",
+      image: "/team-logos/yellow-mole.png",
+      accent: "from-amber-300/25 to-yellow-200/10",
+      ring: "ring-amber-300/40",
+      icon: "💎",
+      text: "Жовтий Кріт жив під землею у мережі золотавих тунелів. Він бачив серцем навіть те, чого не могли побачити інші очима, і знаходив приховані скарби там, де всі проходили повз.",
     },
+    {
+      name: "Червоний Лебідь",
+      image: "/team-logos/red-swan.png",
+      accent: "from-red-400/25 to-rose-300/10",
+      ring: "ring-red-300/40",
+      icon: "🔥",
+      text: "Червоний Лебідь літав вище від хмар. Його крила світилися кольором заходу сонця, а коли він пролітав над озерами — вода ставала теплою й спокійною.",
+    },
+    {
+      name: "Помаранчевий Крук",
+      image: "/team-logos/orange-raven.png",
+      accent: "from-orange-400/25 to-amber-300/10",
+      ring: "ring-orange-300/40",
+      icon: "🗝️",
+      text: "А Помаранчевий Крук був хранителем історій. Він пам’ятав усе, що коли-небудь траплялося у світі, і носив у дзьобі чарівний бурштиновий ключ від таємниць літа.",
+    },
+  ];
+
+  const magicPlaces = [
+    { icon: "🌲", title: "Дерева", text: "дерева вміють шепотіти казки." },
+    { icon: "🌊", title: "Річка", text: "річка світиться вночі зеленим сріблом." },
+    { icon: "🦋", title: "Метелики", text: "метелики залишають у повітрі золоті сліди." },
+    { icon: "🪨", title: "Камені", text: "старі камені пам’ятають голоси дітей." },
+    { icon: "🔥", title: "Вогнища", text: "діти колись сміялися тут біля вогнищ." },
+  ];
+
+  const springRituals = [
+    { image: "/team-logos/green-fox.png", name: "Зелений Лис", text: "приносив мапи нових стежок." },
+    { image: "/team-logos/blue-bear.png", name: "Синій Ведмідь", text: "варив у велетенському казані чорничний чай сили." },
+    { image: "/team-logos/yellow-mole.png", name: "Жовтий Кріт", text: "відкривав підземні ходи до печер із кристалами." },
+    { image: "/team-logos/red-swan.png", name: "Червоний Лебідь", text: "показував приховані озера серед хмар." },
+    { image: "/team-logos/orange-raven.png", name: "Помаранчевий Крук", text: "розповідав пророцтва про майбутні пригоди." },
   ];
 
   return (
     <div className="relative z-10 min-h-screen">
       <Header onBack={onBack} compact />
 
-      <section className="mx-auto max-w-7xl px-5 pb-24 pt-6 md:px-8 lg:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 26 }}
+      <section className="mx-auto max-w-7xl px-5 pb-24 pt-4 md:px-8 lg:px-10">
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.68 }}
-          className="mx-auto max-w-4xl text-center"
+          transition={{ duration: 0.7 }}
+          className="relative overflow-hidden rounded-[2.8rem] border border-white/15 bg-white/10 p-7 shadow-[0_30px_120px_rgba(0,0,0,.42)] backdrop-blur-2xl md:p-10 lg:p-12"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/20 bg-teal-300/10 px-4 py-2 text-sm font-black text-teal-100 backdrop-blur-xl">
-            <Sparkles className="h-4 w-4" />
-            Історія, з якої починається пригода
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_12%,rgba(191,219,254,.23),transparent_16%),radial-gradient(circle_at_22%_75%,rgba(45,212,191,.18),transparent_32%)]" />
+          <div className="absolute right-8 top-8 hidden h-24 w-24 rounded-full bg-sky-100/80 shadow-[0_0_70px_rgba(186,230,253,.55)] md:block" />
+          <div className="absolute inset-x-0 bottom-0 h-56 opacity-75">
+            <MountainSilhouette className="h-full w-full" compact />
           </div>
 
-          <h1 className="mt-6 text-5xl font-black leading-[0.95] tracking-[-0.06em] md:text-7xl lg:text-8xl">
-            Легенда табору
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-3xl text-xl leading-9 text-slate-200/85">
-            Це сторінка, яку ми ще наповнимо вашою справжньою легендою.
-            Поки тут перша заготовка в атмосфері Зелем’янки.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.68, delay: 0.1 }}
-          className="mt-12 overflow-hidden rounded-[2.5rem] border border-white/15 bg-white/10 shadow-[0_30px_100px_rgba(0,0,0,.36)] backdrop-blur-2xl"
-        >
-          <div className="relative p-7 md:p-10">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(45,212,191,.18),transparent_35%),radial-gradient(circle_at_80%_30%,rgba(125,211,252,.12),transparent_32%)]" />
-
-            <div className="relative grid gap-7 lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="rounded-[2rem] border border-teal-200/15 bg-black/20 p-6">
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl border border-teal-200/25 bg-teal-300/10 text-teal-100">
-                    <Mountain className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-black uppercase tracking-[0.2em] text-teal-100/70">Місце легенди</div>
-                    <div className="text-xl font-black text-white">с. Гребенів</div>
-                  </div>
-                </div>
-
-                <p className="text-lg leading-8 text-slate-200/85">
-                  Тут, де ранковий туман торкається смерек, а стежки ведуть до нових відкриттів,
-                  починається історія табору Зелем’янка.
-                </p>
-
-                <div className="mt-7 grid grid-cols-5 gap-2">
-                  {teams.map((team) => (
-                    <img
-                      key={team.name}
-                      src={team.image}
-                      alt={team.name}
-                      title={team.name}
-                      className="h-12 w-12 rounded-full object-cover ring-1 ring-white/25"
-                    />
-                  ))}
-                </div>
+          <div className="relative grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+            <div>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/25 bg-amber-300/10 px-4 py-2 text-sm font-black uppercase tracking-[0.16em] text-amber-100 backdrop-blur-xl">
+                <Sparkles className="h-4 w-4" />
+                Казка табірного літа
               </div>
 
-              <div className="grid gap-4">
-                {legendSteps.map((step, index) => (
-                  <div key={step.title} className="rounded-[2rem] border border-white/12 bg-white/8 p-5 backdrop-blur-xl">
-                    <div className="mb-3 flex items-center gap-3">
-                      <div className="grid h-10 w-10 place-items-center rounded-full border border-teal-200/25 bg-teal-300/10 text-sm font-black text-teal-100">
-                        {index + 1}
-                      </div>
-                      <h2 className="text-2xl font-black text-white">{step.title}</h2>
-                    </div>
-                    <p className="text-base leading-7 text-slate-300">{step.text}</p>
+              <h1 className="max-w-4xl text-5xl font-black leading-[0.95] tracking-[-0.06em] text-amber-100 md:text-7xl lg:text-8xl">
+                Легенда Зелем’янки
+              </h1>
+
+              <p className="mt-7 max-w-3xl text-lg leading-9 text-slate-100/90 md:text-xl">
+                Високо-високо в Карпатських горах, там, де ранкові тумани заплутуються
+                у смерекових верхівках, а зорі ночами світять так близько, ніби їх можна
+                торкнутися лапою чи крилом, жили п’ятеро дивовижних друзів.
+              </p>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-sm rounded-[2rem] border border-amber-200/20 bg-black/25 p-6 text-center shadow-2xl backdrop-blur-xl">
+              <div className="mx-auto grid h-24 w-24 place-items-center rounded-full border border-amber-200/30 bg-amber-300/10 text-5xl">
+                📜
+              </div>
+              <div className="mt-5 text-3xl font-black text-amber-100">ЛЕГЕНДА</div>
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                Історія про п’ять знаків, Місячний Вогонь, Священне Джерело
+                та головну магію Зелем’янки.
+              </p>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.18 }}
+          transition={{ duration: 0.65 }}
+          className="mt-8 rounded-[2.8rem] border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-2xl md:p-8"
+        >
+          <div className="mb-8 text-center">
+            <div className="text-sm font-black uppercase tracking-[0.22em] text-teal-100/70">П’ять знаків</div>
+            <h2 className="mt-2 text-4xl font-black tracking-[-0.04em] text-amber-100 md:text-5xl">
+              П’ятеро дивовижних друзів
+            </h2>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+            {heroes.map((hero, index) => (
+              <motion.article
+                key={hero.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.22 }}
+                transition={{ duration: 0.55, delay: index * 0.06 }}
+                className={`relative overflow-hidden rounded-[2rem] border border-white/12 bg-gradient-to-br ${hero.accent} p-5 shadow-xl backdrop-blur-xl`}
+              >
+                <div className="absolute inset-0 bg-black/20" />
+                <div className="relative text-center">
+                  <img
+                    src={hero.image}
+                    alt={hero.name}
+                    className={`mx-auto h-28 w-28 rounded-full object-cover ring-2 ${hero.ring} drop-shadow-[0_0_30px_rgba(255,255,255,.16)]`}
+                  />
+                  <div className="mx-auto -mt-4 grid h-9 w-9 place-items-center rounded-full border border-amber-200/30 bg-black/35 text-lg backdrop-blur">
+                    {hero.icon}
                   </div>
+                  <h3 className="mt-4 text-2xl font-black text-white">{hero.name}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-200/90">{hero.text}</p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.22 }}
+          transition={{ duration: 0.65 }}
+          className="mt-8 overflow-hidden rounded-[2.8rem] border border-white/15 bg-white/10 shadow-2xl backdrop-blur-2xl"
+        >
+          <div className="relative grid gap-0 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="relative min-h-[320px] overflow-hidden border-b border-white/10 bg-black/30 p-7 lg:border-b-0 lg:border-r">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(191,219,254,.24),transparent_18%),radial-gradient(circle_at_70%_70%,rgba(45,212,191,.14),transparent_30%)]" />
+              <div className="relative flex h-full flex-col justify-end">
+                <div className="mb-5 text-6xl">🌕</div>
+                <div className="text-sm font-black uppercase tracking-[0.22em] text-teal-100/70">Місячний Вогонь</div>
+                <h2 className="mt-2 text-3xl font-black tracking-[-0.04em] text-amber-100 md:text-5xl">
+                  Найбільше диво ставалося щороку саме влітку
+                </h2>
+              </div>
+            </div>
+
+            <div className="p-7 md:p-9">
+              <p className="text-lg leading-9 text-slate-200/90">
+                Та найбільше диво ставалося щороку саме влітку.
+              </p>
+              <p className="mt-4 text-lg leading-9 text-slate-200/90">
+                У ніч, коли над горами сходив Місячний Вогонь, друзі залишали свої
+                вершини, печери, ліси й небесні озера та вирушали вниз — у загадкове
+                місце під назвою Зелем’янка.
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-2">
+                {heroes.map((hero) => (
+                  <img
+                    key={hero.name}
+                    src={hero.image}
+                    alt={hero.name}
+                    className="h-12 w-12 rounded-full object-cover ring-1 ring-white/25"
+                    title={hero.name}
+                  />
                 ))}
               </div>
             </div>
           </div>
-        </motion.div>
+        </motion.section>
 
-        <div className="mt-10 rounded-[2rem] border border-white/12 bg-white/8 p-6 text-center shadow-2xl backdrop-blur-xl">
-          <p className="text-lg italic leading-8 text-teal-100">
-            “Коли команда знаходить свій знак — пригода стає справжньою.”
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.22 }}
+          transition={{ duration: 0.65 }}
+          className="mt-8 rounded-[2.8rem] border border-amber-200/20 bg-black/25 p-7 text-center shadow-2xl backdrop-blur-2xl md:p-10"
+        >
+          <p className="mx-auto max-w-4xl text-2xl font-black leading-10 text-amber-100 md:text-4xl md:leading-[1.3]">
+            Кажуть, звичайні люди не можуть знайти дорогу до Зелем’янки.
+            Вона відкривається лише тим, хто вірить у пригоди, дружбу і дива.
           </p>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.22 }}
+          transition={{ duration: 0.65 }}
+          className="mt-8 rounded-[2.8rem] border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-2xl md:p-8"
+        >
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <div className="text-sm font-black uppercase tracking-[0.22em] text-teal-100/70">Там...</div>
+              <h2 className="mt-2 text-4xl font-black tracking-[-0.04em] text-amber-100 md:text-5xl">
+                Магія місця
+              </h2>
+              <p className="mt-5 text-lg leading-9 text-slate-200/90">
+                Там дерева вміють шепотіти казки. Річка світиться вночі зеленим
+                сріблом. Метелики залишають у повітрі золоті сліди, а старі камені
+                пам’ятають голоси дітей, які колись сміялися тут біля вогнищ.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              {magicPlaces.map((item) => (
+                <div key={item.title} className="rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
+                  <div className="text-3xl">{item.icon}</div>
+                  <div className="mt-3 font-black text-white">{item.title}</div>
+                  <div className="mt-1 text-sm leading-6 text-slate-300">{item.text}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.22 }}
+          transition={{ duration: 0.65 }}
+          className="mt-8 rounded-[2.8rem] border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-2xl md:p-8"
+        >
+          <div className="mb-8 text-center">
+            <div className="text-sm font-black uppercase tracking-[0.22em] text-teal-100/70">Священне Джерело</div>
+            <h2 className="mt-2 text-3xl font-black tracking-[-0.04em] text-amber-100 md:text-5xl">
+              Щоліта п’ятеро друзів збиралися разом
+            </h2>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-5">
+            {springRituals.map((item) => (
+              <div key={item.name} className="rounded-[1.6rem] border border-white/10 bg-black/20 p-4 text-center">
+                <img src={item.image} alt={item.name} className="mx-auto h-16 w-16 rounded-full object-cover ring-1 ring-white/25" />
+                <div className="mt-3 font-black text-teal-100">{item.name}</div>
+                <div className="mt-2 text-sm leading-6 text-slate-300">{item.text}</div>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          <motion.section
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.22 }}
+            transition={{ duration: 0.65 }}
+            className="relative overflow-hidden rounded-[2.8rem] border border-violet-200/15 bg-violet-950/25 p-7 shadow-2xl backdrop-blur-2xl md:p-9"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(168,85,247,.2),transparent_34%)]" />
+            <div className="relative">
+              <div className="text-5xl">⛈️</div>
+              <p className="mt-8 text-3xl font-black leading-tight text-white md:text-4xl">
+                І щороку на них чекало нове випробування.
+              </p>
+            </div>
+          </motion.section>
+
+          <motion.section
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.22 }}
+            transition={{ duration: 0.65, delay: 0.08 }}
+            className="relative overflow-hidden rounded-[2.8rem] border border-amber-200/20 bg-amber-950/20 p-7 shadow-2xl backdrop-blur-2xl md:p-9"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(251,191,36,.22),transparent_34%)]" />
+            <div className="relative">
+              <p className="text-xl leading-9 text-slate-200/90">
+                Та головною магією Зелем’янки були не скарби й не чудеса.
+              </p>
+              <p className="mt-4 text-4xl font-black leading-tight tracking-[-0.04em] text-amber-100 md:text-5xl">
+                Головною магією була дружба.
+              </p>
+              <p className="mt-5 text-lg leading-8 text-slate-300">
+                Бо коли п’ятеро фантастичних героїв збиралися разом, навіть гори
+                ставали теплішими, ріки співали голосніше, а літо тривало трохи довше.
+              </p>
+            </div>
+          </motion.section>
         </div>
+
+        <motion.section
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.22 }}
+          transition={{ duration: 0.65 }}
+          className="mt-8 overflow-hidden rounded-[2.8rem] border border-white/15 bg-black/30 shadow-2xl backdrop-blur-2xl"
+        >
+          <div className="relative p-7 md:p-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_80%,rgba(45,212,191,.18),transparent_36%)]" />
+            <div className="relative grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+              <div>
+                <p className="text-3xl font-black text-amber-100">І кажуть…</p>
+                <p className="mt-5 text-lg leading-9 text-slate-300">
+                  Якщо одного літнього вечора уважно прислухатися до вітру серед смерек,
+                  можна почути сміх Зеленого Лиса, важкі кроки Синього Ведмедя,
+                  тихе риття Жовтого Крота, шелест крил Червоного Лебедя та хриплу
+                  пісню Помаранчевого Крука.
+                </p>
+                <p className="mt-5 text-lg leading-9 text-slate-300">
+                  Це означає, що вони знову вирушили до Зелем’янки.
+                </p>
+              </div>
+
+              <div className="text-center lg:text-right">
+                <div className="mb-6 flex justify-center gap-2 lg:justify-end">
+                  {heroes.map((hero) => (
+                    <img key={hero.name} src={hero.image} alt={hero.name} className="h-12 w-12 rounded-full object-cover ring-1 ring-white/25" />
+                  ))}
+                </div>
+                <p className="text-5xl font-black italic tracking-[-0.04em] text-amber-100 md:text-7xl">
+                  Назустріч пригодам.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.section>
       </section>
     </div>
   );
